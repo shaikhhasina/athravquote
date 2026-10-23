@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Enquiries</title>
+    <link rel="icon" type="image/webp" href="FAVICON.webp">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            min-height: 100vh;
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 2rem;
+            color: #1e293b;
+        }
+        
+        .dashboard-container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* Glassmorphism Header */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding: 1.5rem 2.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+        }
+        
+        .dashboard-header h1 {
+            color: #0f172a;
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .dashboard-header h1 i {
+            color: var(--primary);
+        }
+
+        /* Premium Stat Cards */
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            padding: 2rem;
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+
+        .stat-card.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #7a0000 100%);
+            color: white;
+        }
+        
+        .stat-card.secondary {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+        }
+        
+        .stat-card h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            opacity: 0.9;
+            margin: 0 0 1rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .stat-card .value {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        /* Elegant Table Section */
+        .table-section {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.05);
+        }
+        
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .table-header h2 {
+            margin: 0;
+            color: #0f172a;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .enquiries-table-wrapper {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .enquiries-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        .enquiries-table th {
+            background: #f8fafc;
+            color: #475569;
+            padding: 1.2rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .enquiries-table td {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334155;
+            font-size: 1rem;
+            vertical-align: middle;
+        }
+        
+        .enquiries-table tr {
+            transition: background 0.2s;
+        }
+        
+        .enquiries-table tr:hover {
+            background: #f8fafc;
+        }
+        
+        .enquiries-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Beautiful Buttons */
+        .btn-premium {
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            border: none;
+        }
+        
+        .btn-premium i {
+            font-size: 1.1rem;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #475569;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .btn-outline:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            color: #0f172a;
+        }
+        
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+        
+        .btn-danger:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        /* Note Banner */
+        .info-banner {
+            margin-top: 3rem;
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+            color: #b45309;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+        
+        .info-banner i {
+            font-size: 1.5rem;
+        }
+
+        /* Utilities */
+        .badge {
+            background: #f1f5f9;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+        }
+        
+        .amount-highlight {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* Login Screen */
+        .login-wrapper {
+            display: flex; 
+            min-height: 100vh; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            z-index: 9999; 
+            background: #fff;
+        }
+        .login-banner {
+            flex: 1; 
+            background: url('https://atharventerprises.co/wp-content/uploads/2026/04/digital-tablet-with-various-stationery-scaled.jpg') center/cover no-repeat; 
+            position: relative; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            padding: 4rem;
+        }
+        .login-banner-overlay {
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: linear-gradient(to right, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.6));
+        }
+        .login-banner-content {
+            position: relative; 
+            z-index: 1; 
+            color: white; 
+            max-width: 650px;
+        }
+        .login-banner-content h1 {
+            font-size: 2.8rem; 
+            font-weight: 800; 
+            margin-bottom: 1.5rem; 
+            line-height: 1.2;
+        }
+        .login-banner-content p {
+            font-size: 1.1rem; 
+            opacity: 0.9; 
+            line-height: 1.7; 
+            color: #e2e8f0; 
+            margin-bottom: 1rem;
+        }
+        .login-panel {
+            flex: 1; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background: #f8fafc; 
+            max-width: 650px;
+        }
+        .login-box {
+            background: white; 
+            padding: 4rem; 
+            border-radius: 24px; 
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.05); 
+            width: 100%; 
+            max-width: 450px; 
+            text-align: center; 
+            box-sizing: border-box;
+        }
+        .login-box img {
+            height: 90px; 
+            margin-bottom: 2rem; 
+            border-radius: 12px; 
+            max-width: 100%;
+        }
+        .login-box h2 {
+            margin: 0 0 2.5rem 0; 
+            color: #0f172a; 
+            font-size: 2rem; 
+            font-weight: 800; 
+            letter-spacing: -0.5px;
+        }
+        .login-box input {
+            width: 100%; 
+            padding: 1.2rem; 
+            margin-bottom: 1.2rem; 
+            border: 2px solid #e2e8f0; 
+            border-radius: 12px; 
+            font-family: inherit; 
+            font-size: 1rem; 
+            box-sizing: border-box; 
+            outline: none; 
+            transition: all 0.3s;
+        }
+        .login-box input:focus {
+            border-color: #10b981;
+        }
+        .login-box .btn-download {
+            width: 100%; 
+            justify-content: center; 
+            padding: 1.2rem; 
+            font-size: 1.1rem; 
+            border: none; 
+            font-family: inherit; 
+            font-weight: 700; 
+            letter-spacing: 0.5px; 
+            border-radius: 12px;
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            .dashboard-header {
+                flex-direction: column;
+                gap: 1.5rem;
+                padding: 1.5rem;
+                text-align: center;
+            }
+            .dashboard-header h1 {
+                font-size: 1.8rem;
+                justify-content: center;
+            }
+            .dashboard-header .btn-premium {
+                font-size: 0.85rem;
+                padding: 0.6rem 1rem;
+            }
+            .dashboard-header > div {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 100%;
+            }
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+            .table-section {
+                padding: 1.5rem 1rem;
+            }
+            .table-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: center;
+            }
+            .table-header h2 {
+                font-size: 1.2rem;
+            }
+            .enquiries-table th, .enquiries-table td {
+                padding: 1rem;
+                font-size: 0.85rem;
+            }
+            
+            /* Login Screen Mobile */
+            .login-wrapper {
+                flex-direction: column;
+            }
+            .login-banner {
+                display: none; /* Hide banner on mobile for cleaner look */
+            }
+            .login-panel {
+                max-width: 100%;
+                padding: 1.5rem;
+            }
+            .login-box {
+                padding: 2.5rem 1.5rem;
+            }
+            .login-box h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-wrapper">
+        <!-- Left Banner (Image) -->
+        <div class="login-banner">
+            <div class="login-banner-overlay"></div>
+            <div class="login-banner-content">
+                <h1>Trusted Printing & Stationery Partner in Mumbai</h1>
+                <p>Atharva Enterprises is a well-established printing and stationery service provider based in Byculla (West), Mumbai. We cater to corporates, offices, schools, institutions, retailers, and wholesalers, offering a wide range of printing services and office supplies at competitive prices.</p>
+                <p>With a strong focus on quality, consistency, and timely delivery, we have become a reliable vendor for businesses that require bulk stationery, printing jobs, registers, files, and office essentials &mdash; all from a single source.</p>
+            </div>
+        </div>
+        
+        <!-- Right Login Panel -->
+        <div class="login-panel">
+            <div class="login-box">
+                <img src="Atharv_Enterprises_Logo.webp" alt="Logo">
+                <h2>Admin Login</h2>
+                <form id="loginForm">
+                    <input type="text" id="username" placeholder="Username" required>
+                    <input type="password" id="password" placeholder="Password" required>
+                    <button type="submit" class="btn-premium btn-download">Sign In</button>
+                    <p id="loginError" style="color: #ef4444; margin-top: 1.5rem; display: none; font-size: 0.95rem; font-weight: 600;">Invalid username or password</p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="mainDashboard" class="dashboard-container" style="display: none;">
+        
+        <header class="dashboard-header">
+            <h1>
+                <img src="Atharv_Enterprises_Logo.webp" alt="Logo" style="height: 45px; margin-right: 15px; border-radius: 8px;">
+                <i class="ri-dashboard-3-line"></i> Admin Workspace
+            </h1>
+            <div style="display: flex; gap: 15px;">
+                <a href="index.html" class="btn-premium btn-outline">
+                    <i class="ri-arrow-left-line"></i> Back to Generator
+                </a>
+                <button id="downloadCsvBtn" class="btn-premium btn-download">
+                    <i class="ri-download-cloud-2-line"></i> Export CSV
+                </button>
+            </div>
+        </header>
+
+        <div class="stats-cards">
+            <div class="stat-card primary">
+                <h3>Total Enquiries</h3>
+                <div class="value" id="totalEnquiries">0</div>
+            </div>
+            <div class="stat-card secondary">
+                <h3>Recent (Last 7 Days)</h3>
+                <div class="value" id="recentEnquiries">0</div>
+            </div>
+        </div>
+
+        <section class="table-section">
+            <div class="table-header">
+                <h2>Recent Enquiries</h2>
+                <button id="clearDataBtn" class="btn-premium btn-danger">
+                    <i class="ri-delete-bin-line"></i> Clear All Data
+                </button>
+            </div>
+            
+            <div class="enquiries-table-wrapper">
+                <table class="enquiries-table">
+                    <thead>
+                        <tr>
+                            <th>Date & Time</th>
+                            <th>Client Details</th>
+                            <th>Contact Info</th>
+                            <th>Total Amount</th>
+                            <th style="text-align: right;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="enquiriesBody">
+                        <!-- Rows injected by JS -->
+                    </tbody>
+                </table>
+                <div id="emptyState" style="display: none; text-align: center; padding: 4rem 2rem; color: #94a3b8;">
+                    <i class="ri-inbox-line" style="font-size: 3rem; display: block; margin-bottom: 1rem; opacity: 0.5;"></i>
+                    <h3 style="margin: 0; font-size: 1.2rem; font-weight: 500;">No enquiries found</h3>
+                    <p style="margin: 0.5rem 0 0 0; font-size: 0.95rem;">When clients submit an enquiry, it will appear here.</p>
+                </div>
+            </div>
+        </section>
+        
+    </div>
+
+    <script src="admin.js?v=2"></script>
+</body>
+</html>

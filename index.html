@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotation Maker - Atharv Enterprises</title>
+    <link rel="icon" type="image/webp" href="FAVICON.webp">
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Professional Quotation Maker for Atharv Enterprises">
+</head>
+<body>
+
+    <div class="container main-layout">
+        <div class="quote-card main-quote-card">
+            
+            <header class="quote-header">
+                <div class="company-info">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 1rem;">
+                        <img src="Atharv_Enterprises_Logo.webp" alt="Atharv Enterprises Logo" class="company-logo" style="margin-bottom: 0;">
+                        <h1>Atharva Enterprises</h1>
+                    </div>
+                    <p>A-314, 3rd Floor, Laxmi Niwas, N. M. Joshi Marg</p>
+                    <p>Byculla (W), Mumbai-400011</p>
+                    <p>Phone: 9819976369 | Email: atharva.etpz@gmail.com</p>
+                </div>
+                
+                <div class="quote-meta">
+                    <h2 class="quote-title">QUOTE</h2>
+                    <div class="meta-group">
+                        <label for="quoteNo">QUOTE #:</label>
+                        <input type="text" id="quoteNo" value="[123456]">
+                    </div>
+                    <div class="meta-group">
+                        <label for="quoteDate">DATE:</label>
+                        <input type="date" id="quoteDate">
+                    </div>
+                    <div class="meta-group">
+                        <label for="validUntil">VALID UNTIL:</label>
+                        <input type="date" id="validUntil">
+                    </div>
+                </div>
+            </header>
+
+            <section class="client-section">
+                <div class="client-details-wrapper">
+                    <div class="client-details">
+                        <label style="display: block; font-weight: bold; color: navy; margin-bottom: 10px;">BILLED TO</label>
+                        <div class="form-group">
+                            <input type="text" id="clientName" class="input-field" placeholder="Client Name / Company">
+                        </div>
+                        <div class="form-group">
+                            <textarea id="clientAddress1" class="input-field" placeholder="Client Address" style="min-height: 80px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="client-contact">
+                        <label style="display: block; font-weight: bold; color: navy; margin-bottom: 10px;">CONTACT INFO</label>
+                        <div class="form-group">
+                            <input type="text" id="clientEmail" class="input-field" placeholder="Email Address">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="clientPhone" class="input-field" placeholder="Phone Number">
+                        </div>
+                        <div class="form-group">
+    <input type="text" id="clientGstNo" class="input-field" placeholder="GST Number (optional)" maxlength="15" pattern="[0-9A-Z]{15}" style="text-transform: uppercase;" title="GST number is 15 characters: letters and digits">
+</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="items-table-wrapper" style="margin-bottom: 1rem;">
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th class="col-desc">Description</th>
+                            <th class="col-qty">Qty</th>
+                            <th class="col-price">Unit Price (₹)</th>
+                            <th class="col-tax">Tax</th>
+                            <th class="col-total">Total (₹)</th>
+                            <th class="col-action"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemsBody">
+                        <!-- Rows will be injected by JS -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <button class="add-btn" id="addRowBtn" style="margin-top: 0; margin-bottom: 2rem;">
+                <i class="ri-add-line"></i> Add Item
+            </button>
+
+
+            <section class="summary-section">
+                <div class="notes-area">
+                    <div class="section-title">TERMS AND CONDITIONS</div>
+                    <div class="form-group" style="border: 1px solid var(--text-main); padding: 10px; margin-top: 5px;">
+                        <textarea id="notes" class="input-field" style="min-height: 120px; border: none; font-size: 0.9rem;">1. Subject to Mumbai Jurisdiction.
+2. Goods once sold will not be taken back.
+3. Interest @ 18% p.a. will be charged if payment is not made within 15 days.
+Customer Acceptance (sign below):
+
+x_____________________________________
+Print Name:</textarea>
+                    </div>
+                </div>
+                
+                <div class="totals-box">
+                    <div class="total-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">₹0.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax Rate (GST %) <input type="number" id="taxRate" class="tax-input" value="18" min="0" max="100"></span>
+                        <span id="taxAmount">₹0.00</span>
+                    </div>
+                    <div class="total-row grand-total" style="background: #fff; color: navy; padding: 5px 10px; font-weight: bold; border: 2px solid navy;">
+                        <span>TOTAL</span>
+                        <span id="grandTotal">₹0.00</span>
+                    </div>
+                </div>
+            </section>
+
+            <div class="controls">
+                <button class="btn btn-secondary" id="resetBtn">
+                    <i class="ri-refresh-line"></i> Clear
+                </button>
+                <a href="#" id="enquireBtn" class="btn btn-secondary" style="text-decoration: none;">
+                    <i class="ri-whatsapp-line"></i> Enquire Now
+                </a>
+                <a href="#" id="payBtn" class="btn btn-primary" style="text-decoration: none;">
+                    <i class="ri-secure-payment-line"></i> Payment
+                </a>
+                <button class="btn btn-primary" id="printBtn">
+                    <i class="ri-printer-line"></i> Print / Save PDF
+                </button>
+            </div>
+
+        </div>
+        
+        <div class="sidebar hide-on-print sidebar-layout">
+            <h3 style="color: navy; margin-bottom: 1rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                <span>Products List</span>
+                <span style="font-size: 0.9rem; background: var(--primary); color: white; padding: 2px 8px; border-radius: 12px;" id="productCount">237</span>
+            </h3>
+            <div class="sidebar-search" style="margin-bottom: 1rem;">
+                <input type="text" id="sidebarSearch" placeholder="Search products..." style="width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 4px; outline: none; font-family: 'Outfit', sans-serif;">
+            </div>
+            <div id="sidebarProductList" style="max-height: 70vh; overflow-y: auto; padding-right: 5px;">
+                <!-- Products will be injected here -->
+            </div>
+        </div>
+        
+    </div>
+
+    <footer style="text-align: center; margin-top: 2rem; font-size: 0.85rem; padding: 1rem 0; border-top: 1px solid #ddd; background: rgba(255, 255, 255, 0.8);">
+        <div style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+            <a href="shipping-policy.html" style="color: navy; text-decoration: none; font-weight: 500;">Shipping Policy</a>
+            <a href="refund-and-return-policy.html" style="color: navy; text-decoration: none; font-weight: 500;">Refund & Return Policy</a>
+            <a href="terms-and-conditions.html" style="color: navy; text-decoration: none; font-weight: 500;">Terms & Conditions</a>
+            <a href="privacy-policy.html" style="color: navy; text-decoration: none; font-weight: 500;">Privacy Policy</a>
+        </div>
+
+    </footer>
+
+    <script src="products.js?v=4"></script>
+    <script src="script.js?v=4"></script>
+</body>
+</html>
